@@ -1,2 +1,2 @@
-# Handle 404s
-/*    /index.html   404
+# Handle 404s - send to index.html with 200 status
+/*    /index.html   200
