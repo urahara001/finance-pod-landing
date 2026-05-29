@@ -1,0 +1,46 @@
+
+# Secrets - NEVER COMMIT
+.env
+.env.*
+.credentials
+*.pem
+*.key
+example.env
+example.env.local
+
+# Docker volumes - Large data files
+pb_data/
+postgres_data/
+redis_data/
+activepieces_data/
+listmonk_data/
+listmonk_uploads/
+m&a/
+
+
+# Local development
+.DS_Store
+*.log
+*.tar.gz
+*.gz
+*.backup
+*.bak
+
+# M&A documents (private)
+m&a_docs/*.md
+!m&a_docs/README.md
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+
+aws_ses_credentials.txt
+aws_ses_transfer_guide.md
+common_commands.txt
+memory.md
+backups/

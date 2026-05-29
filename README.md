@@ -1,0 +1,1 @@
+Static landing page for the Financial Independence Calculator.
