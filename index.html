@@ -358,18 +358,14 @@
             </div>
         </div>
     </div>
-    
-    <script>
+        <script>
         const POCKETBASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://127.0.0.1:8090' 
-    : (() => {
-        // Check if domain is reachable, otherwise use IP
-        const domain = 'https://api.finance.yashparkar.com';
-        const ip = 'http://141.148.205.156:8090';
-        
-        // Use domain as primary, IP as backup (browser will handle connection errors)
-        return domain;
-    })();
+            ? 'http://127.0.0.1:8090' 
+            : (() => {
+                const domain = 'https://api.finance.yashparkar.com';
+                const ip = 'http://141.148.205.156:8090';
+                return domain;
+            })();
         
         const form = document.getElementById('leadForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -393,7 +389,8 @@
             resultDiv.innerHTML = '';
             
             try {
-                const response = await fetch(`${POCKETBASE_URL}/api/collections/leads/records`, {
+                // 1. Save to PocketBase
+                const pbResponse = await fetch(`${POCKETBASE_URL}/api/collections/leads/records`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -406,14 +403,29 @@
                     })
                 });
                 
-                if (response.ok) {
-                    resultDiv.className = 'result success';
-                    resultDiv.innerHTML = '✅ Success! Check your email for your personalized financial report.';
-                    form.reset();
-                } else {
-                    throw new Error('Something went wrong');
+                if (!pbResponse.ok) {
+                    throw new Error('PocketBase submission failed');
                 }
+
+                // 2. After PocketBase success, add to Listmonk via our secure proxy function
+                try {
+                    await fetch('/listmonk', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email, name: '' })
+                    });
+                } catch (listmonkError) {
+                    // Log the error but don't fail the user-facing success message
+                    console.error('Listmonk subscription error:', listmonkError);
+                }
+                
+                // 3. Show success message to user
+                resultDiv.className = 'result success';
+                resultDiv.innerHTML = '✅ Success! Check your email for your personalized financial report.';
+                form.reset();
+                
             } catch (error) {
+                console.error('Submission error:', error);
                 resultDiv.className = 'result error';
                 resultDiv.innerHTML = '❌ Error. Please try again or contact support.';
             } finally {
@@ -423,10 +435,13 @@
         });
         
         // Unsubscribe link handler
-        document.getElementById('unsubscribeLink').addEventListener('click', (e) => {
-            e.preventDefault();
-            alert('To unsubscribe, click the link at the bottom of any email you receive from us.\n\nIf you need assistance, email: hello@finance.yashparkar.com');
-        });
+        const unsubscribeLink = document.getElementById('unsubscribeLink');
+        if (unsubscribeLink) {
+            unsubscribeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('To unsubscribe, click the link at the bottom of any email you receive from us.\n\nIf you need assistance, email: hello@finance.yashparkar.com');
+            });
+        }
     </script>
 </body>
 </html>
