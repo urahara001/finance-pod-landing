@@ -7,6 +7,8 @@
 *.key
 example.env
 example.env.local
+.env.example
+
 
 # Docker volumes - Large data files
 pb_data/
