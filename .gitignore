@@ -44,3 +44,9 @@ aws_ses_transfer_guide.md
 common_commands.txt
 memory.md
 backups/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
