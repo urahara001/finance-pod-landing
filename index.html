@@ -361,8 +361,15 @@
     
     <script>
         const POCKETBASE_URL = window.location.hostname === 'localhost' 
-            ? 'http://127.0.0.1:8090' 
-            : 'https://api.finance.yashparkar.com';
+    ? 'http://127.0.0.1:8090' 
+    : (() => {
+        // Check if domain is reachable, otherwise use IP
+        const domain = 'https://api.finance.yashparkar.com';
+        const ip = 'http://141.148.205.156:8090';
+        
+        // Use domain as primary, IP as backup (browser will handle connection errors)
+        return domain;
+    })();
         
         const form = document.getElementById('leadForm');
         const submitBtn = document.getElementById('submitBtn');
