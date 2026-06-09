@@ -1,14 +1,16 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "finance-pod-landing",
-  "compatibility_date": "2026-06-08",
+  "compatibility_date": "2026-06-09",
   "observability": {
     "enabled": true
   },
-  "assets": {
-    "directory": "."
-  },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  },
+  "main": "./worker.js"
 }
