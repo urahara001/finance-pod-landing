@@ -2,23 +2,27 @@ export default {
     async fetch(request, env) {
         const url = new URL(request.url);
         
-        // Handle Listmonk subscription
         if (url.pathname === '/listmonk' && request.method === 'POST') {
             try {
                 const { email, name } = await request.json();
                 
-                // Required environment variables:
-                // LISTMONK_URL = "https://emails-finance.yashparkar.com/api"
-                // LISTMONK_LIST_ID = "3"
-                // LISTMONK_API_USER = "api-username-listmonk"
-                // LISTMONK_API_TOKEN = "9RC5xChwAbeVQ6eMV9SLoo1jpmvmXHbD"
+                // Log all environment variables (for debugging)
+                console.log('LISTMONK_URL:', env.LISTMONK_URL);
+                console.log('LISTMONK_LIST_ID:', env.LISTMONK_LIST_ID);
+                console.log('LISTMONK_API_USER:', env.LISTMONK_API_USER);
+                console.log('LISTMONK_API_TOKEN exists:', !!env.LISTMONK_API_TOKEN);
                 
                 const listId = parseInt(env.LISTMONK_LIST_ID, 10);
+                if (isNaN(listId)) {
+                    throw new Error(`Invalid LISTMONK_LIST_ID: ${env.LISTMONK_LIST_ID}`);
+                }
                 const listmonkUrl = env.LISTMONK_URL;
+                if (!listmonkUrl) throw new Error('LISTMONK_URL is missing');
                 const apiUser = env.LISTMONK_API_USER;
+                if (!apiUser) throw new Error('LISTMONK_API_USER is missing');
                 const apiToken = env.LISTMONK_API_TOKEN;
+                if (!apiToken) throw new Error('LISTMONK_API_TOKEN is missing');
                 
-                // Basic Auth with API user and token
                 const auth = btoa(`${apiUser}:${apiToken}`);
                 
                 const response = await fetch(`${listmonkUrl}/subscribers`, {
@@ -41,14 +45,14 @@ export default {
                 });
             } catch (err) {
                 console.error('Listmonk error:', err);
-                return new Response(JSON.stringify({ error: err.message }), {
+                // Return a detailed error message to the frontend
+                return new Response(JSON.stringify({ error: err.message, stack: err.stack }), {
                     status: 500,
                     headers: { 'Content-Type': 'application/json' }
                 });
             }
         }
         
-        // Serve static assets (your HTML, CSS, JS)
         return env.ASSETS.fetch(request);
     }
 }
