@@ -6,7 +6,7 @@ export default {
             try {
                 const { email, name } = await request.json();
                 
-                // Log all environment variables (for debugging)
+                // Log all environment variables for debugging
                 console.log('LISTMONK_URL:', env.LISTMONK_URL);
                 console.log('LISTMONK_LIST_ID:', env.LISTMONK_LIST_ID);
                 console.log('LISTMONK_API_USER:', env.LISTMONK_API_USER);
@@ -45,7 +45,6 @@ export default {
                 });
             } catch (err) {
                 console.error('Listmonk error:', err);
-                // Return a detailed error message to the frontend
                 return new Response(JSON.stringify({ error: err.message, stack: err.stack }), {
                     status: 500,
                     headers: { 'Content-Type': 'application/json' }
