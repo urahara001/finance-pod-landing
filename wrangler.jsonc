@@ -12,5 +12,11 @@
     "directory": "./",
     "binding": "ASSETS"
   },
-  "main": "./worker.js"
+  "main": "./worker.js",
+  "vars": {
+    "LISTMONK_URL": "https://emails-finance.yashparkar.com/api",
+    "LISTMONK_LIST_ID": "3",
+    "LISTMONK_API_USER": "api-username-listmonk",
+    "LISTMONK_API_TOKEN": "9RC5xChwAbeVQ6eMV9SLoo1jpmvmXHbD"
+  }
 }
