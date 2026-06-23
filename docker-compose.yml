@@ -48,7 +48,7 @@ services:
       timeout: 5s
       retries: 5
 
-  activepieces:
+ 
     image: activepieces/activepieces:latest
     container_name: finance_activepieces
     depends_on:
