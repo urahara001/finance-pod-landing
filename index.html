@@ -40,6 +40,63 @@
                     Crack Challenges By Entering Through Our Link.
                     <span class="hero-sub">Now Avoid the "5% Drawdown Trap"</span>
                 </h1>
+
+                <script src="https://www.google.com/recaptcha/api.js?render=6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA" async defer></script>
+                
+                <form id="hero-lead-capture" action="https://activepieces-finance.yashparkar.com/api/v1/webhooks/ctjk18auY0lQUH4fyHrA3" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 32px;">
+                    <div style="display: flex; justify-content: center; align-items: stretch; gap: 12px; flex-wrap: wrap; width: 100%;">
+                        
+                        <!-- Honeypot Field (Hidden from humans) -->
+                        <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+                            <input type="text" name="b_password_trap" tabindex="-1" value="" autocomplete="off" />
+                        </div>
+
+                        <!-- reCAPTCHA Token (Hidden) -->
+                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" />
+
+                        <!-- Cookie ID (Hidden, will be set by JavaScript) -->
+                        <input type="hidden" name="cookie_id" id="cookie_id" />
+
+                        <!-- Email Field -->
+                        <input type="email" name="email" placeholder="Enter your email..." required 
+                            style="padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-muted); background: var(--bg-panel); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem; width: 100%; max-width: 320px; outline: none; transition: border-color var(--transition);" 
+                            onfocus="this.style.borderColor='var(--neon-green)'" 
+                            onblur="this.style.borderColor='var(--border-muted)'" />
+
+                        <button type="submit" class="btn-primary" style="padding: 12px 32px; font-size: 0.85rem; cursor: pointer;">Seems Interesting</button>
+                    </div>
+                </form>
+
+                <script>
+                    // Generate or retrieve persistent cookie ID
+                    function getOrCreateCookieId() {
+                        let cookieId = document.cookie.split('; ').find(row => row.startsWith('user_id='));
+                        if (cookieId) {
+                            return cookieId.split('=')[1];
+                        } else {
+                            const newId = crypto.randomUUID();
+                            document.cookie = `user_id=${newId}; path=/; max-age=31536000; Secure; SameSite=Lax`;
+                            return newId;
+                        }
+                    }
+
+                    // Set the cookie_id in the hidden field before form submission
+                    document.getElementById('hero-lead-capture').addEventListener('submit', function(event) {
+                        event.preventDefault(); // Prevent standard submission
+                        
+                        // Set the cookie_id
+                        document.getElementById('cookie_id').value = getOrCreateCookieId();
+                        
+                        grecaptcha.ready(function() {
+                            grecaptcha.execute('6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA', {action: 'submit'}).then(function(token) {
+                                document.getElementById('g-recaptcha-response').value = token;
+                                
+                                // Submit the form to Activepieces
+                                document.getElementById('hero-lead-capture').submit();
+                            });
+                        });
+                    });
+                </script>
             </div>
 
             <!-- Simulation Subtitle -->
