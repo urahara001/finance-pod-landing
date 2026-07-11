@@ -43,7 +43,13 @@
 
                 <script src="https://www.google.com/recaptcha/api.js?render=6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA" async defer></script>
                 
-                <form id="hero-lead-capture" action="https://activepieces-finance.yashparkar.com/api/v1/webhooks/ctjk18auY0lQUH4fyHrA3" method="POST" style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 32px;">
+                <!-- Success Message (Hidden by default) -->
+                <div id="lead-capture-success" style="display: none; text-align: center; padding: 20px; border: 1px solid var(--neon-green); border-radius: var(--radius-sm); margin-top: 32px;">
+                    <h2 style="color: var(--neon-green);">✅ Thank You!</h2>
+                    <p style="font-family: var(--font-mono);">You have been added to the list. We'll be in touch soon.</p>
+                </div>
+
+                <form id="hero-lead-capture" style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 32px;">
                     <div style="display: flex; justify-content: center; align-items: stretch; gap: 12px; flex-wrap: wrap; width: 100%;">
                         
                         <!-- Honeypot Field (Hidden from humans) -->
@@ -80,19 +86,49 @@
                         }
                     }
 
-                    // Set the cookie_id in the hidden field before form submission
+                    // Handle form submission with fetch API
                     document.getElementById('hero-lead-capture').addEventListener('submit', function(event) {
-                        event.preventDefault(); // Prevent standard submission
-                        
+                        event.preventDefault(); // Prevent page reload or redirect
+
                         // Set the cookie_id
-                        document.getElementById('cookie_id').value = getOrCreateCookieId();
-                        
+                        const cookieId = getOrCreateCookieId();
+                        document.getElementById('cookie_id').value = cookieId;
+
+                        // Prepare form data
+                        const form = event.target;
+                        const formData = new FormData(form);
+                        const data = {
+                            email: formData.get('email'),
+                            source_utm: formData.get('source_utm') || '',
+                            cookie_id: cookieId,
+                            'g-recaptcha-response': document.getElementById('g-recaptcha-response').value
+                        };
+
+                        // Execute reCAPTCHA and send data
                         grecaptcha.ready(function() {
                             grecaptcha.execute('6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA', {action: 'submit'}).then(function(token) {
                                 document.getElementById('g-recaptcha-response').value = token;
-                                
-                                // Submit the form to Activepieces
-                                document.getElementById('hero-lead-capture').submit();
+                                data['g-recaptcha-response'] = token;
+
+                                // Send data to Activepieces
+                                fetch('https://activepieces-finance.yashparkar.com/api/v1/webhooks/ctjk18auY0lQUH4fyHrA3', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(data)
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Show success message, hide form
+                                        document.getElementById('lead-capture-success').style.display = 'block';
+                                        document.getElementById('hero-lead-capture').style.display = 'none';
+                                    } else {
+                                        alert('Something went wrong. Please try again.');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('Network error. Please try again.');
+                                });
                             });
                         });
                     });
