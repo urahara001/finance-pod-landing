@@ -152,6 +152,54 @@
         </div>
     </section>
 
+    <section id="journal" class="widescreen-wrapper" style="margin-bottom: var(--fib-6);">
+        <div class="terminal-panel">
+            <h3><i class="fa-solid fa-book-journal-whills"></i> Live Multi-Account Ledger & Journal</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: var(--fib-3);">Track your active evaluation accounts and log daily execution states to prevent emotional drawdown traps.</p>
+            
+            <form id="accountForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 140px; gap: 12px; margin-bottom: var(--fib-4); align-items: end;">
+                <div class="form-group" style="margin: 0;">
+                    <label>Account Label</label>
+                    <input type="text" id="accName" placeholder="e.g. Apex #1 ($50k)" required />
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label>Starting Balance ($)</label>
+                    <input type="number" id="accStart" value="50000" step="1000" required />
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label>Current Equity ($)</label>
+                    <input type="number" id="accCurrent" value="51200" step="100" required />
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <label>Status</label>
+                    <select id="accStatus">
+                        <option value="Active">Active</option>
+                        <option value="Warning">High Risk</option>
+                        <option value="Breached">Breached</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="height: 45px;">+ Add Account</button>
+            </form>
+
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">
+                            <th style="padding: 12px;">Account Name</th>
+                            <th style="padding: 12px;">Starting Balance</th>
+                            <th style="padding: 12px;">Current Equity</th>
+                            <th style="padding: 12px;">PnL / Buffer</th>
+                            <th style="padding: 12px;">Status</th>
+                            <th style="padding: 12px; text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="accountTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
     <section id="coming-soon" class="widescreen-wrapper">
         <div class="teaser-section">
             <span class="status-badge" style="margin-bottom: var(--fib-2);">🔮 COMING SOON FOR TRADINGVIEW & MT5</span>

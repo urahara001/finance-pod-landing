@@ -158,5 +158,92 @@ function calculateMetrics() {
     }
 }
 
+// --- MULTI-ACCOUNT LEDGER & JOURNAL LOGIC ---
+
+let accounts = JSON.parse(localStorage.getItem('safety_net_accounts')) || [
+    { id: 1, name: 'Apex Evaluation #1', start: 50000, current: 51800, status: 'Active' },
+    { id: 2, name: 'Topstep Combine #2', start: 50000, current: 49200, status: 'Warning' }
+];
+
+function saveAndRenderAccounts() {
+    localStorage.setItem('safety_net_accounts', JSON.stringify(accounts));
+    renderAccountsTable();
+}
+
+function renderAccountsTable() {
+    const tbody = document.getElementById('accountTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    
+    if (accounts.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">No accounts tracked yet. Add your evaluation accounts above.</td></tr>`;
+        return;
+    }
+
+    accounts.forEach(acc => {
+        const pnl = acc.current - acc.start;
+        const pnlFormatted = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toLocaleString();
+        const pnlColor = pnl >= 0 ? 'var(--neon-green)' : 'var(--danger-red)';
+        
+        let statusClass = 'active';
+        if (acc.status === 'Warning') statusClass = 'warning';
+        if (acc.status === 'Breached') statusClass = 'breached';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="color: var(--text-main); font-weight: 600;">${escapeHtml(acc.name)}</td>
+            <td>$${Number(acc.start).toLocaleString()}</td>
+            <td>$${Number(acc.current).toLocaleString()}</td>
+            <td style="color: ${pnlColor}; font-weight: 700;">${pnlFormatted}</td>
+            <td><span class="badge-status ${statusClass}">${acc.status}</span></td>
+            <td style="text-align: right;">
+                <button onclick="deleteAccount(${acc.id})" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px;" title="Delete Account"><i class="fa-solid fa-trash"></i></button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function deleteAccount(id) {
+    accounts = accounts.filter(acc => acc.id !== id);
+    saveAndRenderAccounts();
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+const accountForm = document.getElementById('accountForm');
+if (accountForm) {
+    accountForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('accName').value;
+        const start = parseFloat(document.getElementById('accStart').value) || 50000;
+        const current = parseFloat(document.getElementById('accCurrent').value) || start;
+        const status = document.getElementById('accStatus').value;
+
+        const newAcc = {
+            id: Date.now(),
+            name,
+            start,
+            current,
+            status
+        };
+
+        accounts.push(newAcc);
+        saveAndRenderAccounts();
+
+        // Reset form
+        document.getElementById('accName').value = '';
+        document.getElementById('accStart').value = '50000';
+        document.getElementById('accCurrent').value = '51200';
+        document.getElementById('accStatus').value = 'Active';
+    });
+}
+
+// Initial render on load
+renderAccountsTable();
+
 // Initialize on load
 calculateMetrics();
