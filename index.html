@@ -3,328 +3,273 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DRG Bridge – Prop Trading Protection</title>
+    <title>Safety Net // Prop Trading Liquidation Shield & Calculator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <!-- === NAVIGATION === -->
     <nav class="navbar">
-        <div class="container">
+        <div class="widescreen-wrapper">
             <div class="nav-inner">
                 <a href="#" class="logo">
-                    DRG <span class="logo-accent">//</span> BRIDGE
+                    SAFETY <span class="logo-accent">//</span> NET
                 </a>
                 <div class="nav-links">
-                    <a href="#how-it-works">How It Works</a>
-                    <a href="#simulation">Simulation</a>
-                    <a href="#pricing">Pricing</a>
+                    <a href="#calculator">Live Stress Test</a>
+                    <a href="#coming-soon">Chart Indicator (Coming Soon)</a>
+                    <a href="#pricing">Access Pass</a>
                 </div>
-                <a href="#pricing" class="btn-primary">GET STARTED</a>
+                <a href="#pricing" class="btn-primary" style="padding: 10px 20px; font-size: 0.75rem;">GET SAFETY NET</a>
             </div>
         </div>
     </nav>
 
-     <!-- === HERO + SIMULATION (Integrated Section) === -->
-    <section id="simulation" class="sim-section" style="padding-top: 40px;">
-        <div class="container">
-            <!-- Hero Content -->
-            <div class="hero-content" style="max-width: 1000px; margin: 0 auto 32px; text-align: center;">
-                <div class="status-badge" style="align-self: center;">
-                    ⚡ <span class="status-online">LIVE DEMO</span> // DRG Bridge Active
-                </div>
-                <h1 style="text-align: center;">
-                    Crack Challenges By Entering Through Our Link.
-                    <span class="hero-sub">Now Avoid the "5% Drawdown Trap"</span>
-                </h1>
+    <section class="hero-section">
+        <div class="widescreen-wrapper">
+            <div class="status-badge">
+                🛡️ <span class="status-online">LIVE PROP TRADING SHIELD</span> // Instant Terminal Protection
+            </div>
+            <h1 class="hero-title">
+                Am I about to blow my evaluation accounts if this trade reverses?
+            </h1>
+            <p class="hero-desc">
+                Your prop firm dashboard hides your true high-watermark risk behind asynchronous numbers. Run a real-time stress test on your active open equity before market volatility triggers a permanent lockout.
+            </p>
+        </div>
+    </section>
 
-                <script src="https://www.google.com/recaptcha/api.js?render=6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA" async defer></script>
+    <section id="calculator" class="widescreen-wrapper">
+        <div class="workspace-grid">
+            
+            <div class="terminal-panel">
+                <h3><i class="fa-solid fa-sliders"></i> Live Terminal Parameters</h3>
                 
-                <!-- Success Message (Hidden by default) -->
-                <div id="lead-capture-success" style="display: none; text-align: center; padding: 20px; border: 1px solid var(--neon-green); border-radius: var(--radius-sm); margin-top: 32px;">
-                    <h2 style="color: var(--neon-green);">✅ Thank You!</h2>
-                    <p style="font-family: var(--font-mono);">You have been added to the list. We'll be in touch soon.</p>
+                <div class="form-group">
+                    <label for="propFirm">Firm Rule Structure 
+                        <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Intraday trailing models lock your liquidation floor to your highest floating peak. Static models anchor to your starting balance.</span></span>
+                    </label>
+                    <select id="propFirm">
+                        <option value="intraday">Intraday Trailing (e.g., Apex, Bulenox)</option>
+                        <option value="static">Static Balance Baseline (e.g., FTMO, FundedNext)</option>
+                    </select>
                 </div>
 
-                <form id="hero-lead-capture" style="display: flex; flex-direction: column; align-items: center; gap: 16px; margin-top: 32px;">
-                    <div style="display: flex; justify-content: center; align-items: stretch; gap: 12px; flex-wrap: wrap; width: 100%;">
-                        
-                        <!-- Honeypot Field (Hidden from humans) -->
-                        <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
-                            <input type="text" name="b_password_trap" tabindex="-1" value="" autocomplete="off" />
-                        </div>
+                <div class="form-group">
+                    <label for="startingBalance">Today's Starting Balance ($)
+                        <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Your exact account balance at today's market open.</span></span>
+                    </label>
+                    <input type="number" id="startingBalance" value="50000" step="1000">
+                </div>
 
-                        <!-- reCAPTCHA Token (Hidden) -->
-                        <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" />
-
-                        <!-- Cookie ID (Hidden, will be set by JavaScript) -->
-                        <input type="hidden" name="cookie_id" id="cookie_id" />
-
-                        <!-- Email Field -->
-                        <input type="email" name="email" placeholder="Enter your email..." required 
-                            style="padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-muted); background: var(--bg-panel); color: var(--text-primary); font-family: var(--font-mono); font-size: 0.85rem; width: 100%; max-width: 320px; outline: none; transition: border-color var(--transition);" 
-                            onfocus="this.style.borderColor='var(--neon-green)'" 
-                            onblur="this.style.borderColor='var(--border-muted)'" />
-
-                        <button type="submit" class="btn-primary" style="padding: 12px 32px; font-size: 0.85rem; cursor: pointer;">Seems Interesting</button>
+                <div class="form-row dual">
+                    <div class="form-group">
+                        <label for="drawdownPercent">Max Drawdown (%)</label>
+                        <input type="number" id="drawdownPercent" value="5.0" step="0.5">
                     </div>
-                </form>
+                    <div class="form-group">
+                        <label for="drawdownDollar">Max Drawdown ($)</label>
+                        <input type="number" id="drawdownDollar" value="2500" step="100">
+                    </div>
+                </div>
 
-                <script>
-                    // Generate or retrieve persistent cookie ID
-                    function getOrCreateCookieId() {
-                        let cookieId = document.cookie.split('; ').find(row => row.startsWith('user_id='));
-                        if (cookieId) {
-                            return cookieId.split('=')[1];
-                        } else {
-                            const newId = crypto.randomUUID();
-                            document.cookie = `user_id=${newId}; path=/; max-age=31536000; Secure; SameSite=Lax`;
-                            return newId;
-                        }
+                <div class="form-row dual input-divider">
+                    <div class="form-group">
+                        <label for="peakPercent">Intraday Peak (%)
+                            <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Highest floating equity peak reached today relative to start balance.</span></span>
+                        </label>
+                        <input type="number" id="peakPercent" value="6.0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="peakDollar">Intraday Peak ($)</label>
+                        <input type="number" id="peakDollar" value="53000" step="100">
+                    </div>
+                </div>
+
+                <div class="form-row dual input-divider">
+                    <div class="form-group">
+                        <label for="currentPercent">Current Equity (%)
+                            <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Real-time floating equity including open PnL right now.</span></span>
+                        </label>
+                        <input type="number" id="currentPercent" value="3.0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="currentDollar">Current Equity ($)</label>
+                        <input type="number" id="currentDollar" value="51500" step="100">
+                    </div>
+                </div>
+
+                <div class="form-row dual input-divider">
+                    <div class="form-group">
+                        <label for="simPnlPercent">Simulated Trade PnL (%)
+                            <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Test stop-loss leeway. Positive = profit gain, Negative = drawdown/loss retracement.</span></span>
+                        </label>
+                        <input type="number" id="simPnlPercent" value="-2.0" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="simPnlDollar">Simulated Trade PnL ($)</label>
+                        <input type="number" id="simPnlDollar" value="-1030" step="50">
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-panel">
+                <h3><i class="fa-solid fa-calculator"></i> Stress-Test Analysis Matrix</h3>
+                
+                <div class="matrix-metrics">
+                    <div class="metric-tile">
+                        <div>
+                            <div class="metric-tile-title">Active Liquidation Floor</div>
+                            <div class="metric-tile-sub">Strict violation threshold</div>
+                        </div>
+                        <div class="metric-tile-val warning" id="hardFloor">$50,500</div>
+                    </div>
+
+                    <div class="metric-tile">
+                        <div>
+                            <div class="metric-tile-title">Projected Equity Post-Simulation</div>
+                            <div class="metric-tile-sub">Account equity after trade outcome</div>
+                        </div>
+                        <div class="metric-tile-val" id="projectedEquity">$50,470</div>
+                    </div>
+
+                    <div class="metric-tile">
+                        <div>
+                            <div class="metric-tile-title">Remaining Post-Stress Buffer</div>
+                            <div class="metric-tile-sub">Safety margin remaining above floor</div>
+                        </div>
+                        <div class="metric-tile-val" id="trueBuffer">-$30</div>
+                    </div>
+                </div>
+
+                <div class="analysis-box" id="explanationText">
+                    </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="coming-soon" class="widescreen-wrapper">
+        <div class="teaser-section">
+            <span class="status-badge" style="margin-bottom: var(--fib-2);">🔮 COMING SOON FOR TRADINGVIEW & MT5</span>
+            <h3>The Safety Net Live Chart Indicator</h3>
+            <p>
+                Tired of manual calculations? We are launching a native charting indicator that plots your exact intraday trailing liquidation floor and dynamic stop-loss warning bands directly onto your MT5 / TradingView workspace in real time.
+            </p>
+
+            <script src="https://www.google.com/recaptcha/api.js?render=6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA" async defer></script>
+            
+            <div id="lead-capture-success" style="display: none; text-align: center; padding: 15px; border: 1px solid var(--neon-green); border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="color: var(--neon-green);">✅ You're on the Priority Beta List!</h4>
+                <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-muted);">We'll notify you the moment the chart indicator releases.</p>
+            </div>
+
+            <form id="hero-lead-capture" class="lead-capture-box" style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="position: absolute; left: -9999px; top: -9999px;" aria-hidden="true">
+                    <input type="text" name="b_password_trap" tabindex="-1" value="" autocomplete="off" />
+                </div>
+                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" />
+                <input type="hidden" name="cookie_id" id="cookie_id" />
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                    <input type="email" name="email" placeholder="Enter your email for beta access..." required 
+                        style="padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-deep); color: var(--text-main); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; flex: 1; min-width: 260px; outline: none;" />
+                    <button type="submit" class="btn-primary">Join Beta Waitlist</button>
+                </div>
+            </form>
+
+            <script>
+                function getOrCreateCookieId() {
+                    let cookieId = document.cookie.split('; ').find(row => row.startsWith('user_id='));
+                    if (cookieId) {
+                        return cookieId.split('=')[1];
+                    } else {
+                        const newId = crypto.randomUUID();
+                        document.cookie = `user_id=${newId}; path=/; max-age=31536000; Secure; SameSite=Lax`;
+                        return newId;
                     }
+                }
 
-                    // Handle form submission with fetch API
-                    document.getElementById('hero-lead-capture').addEventListener('submit', function(event) {
-                        event.preventDefault(); // Prevent page reload or redirect
+                document.getElementById('hero-lead-capture').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const cookieId = getOrCreateCookieId();
+                    document.getElementById('cookie_id').value = cookieId;
 
-                        // Set the cookie_id
-                        const cookieId = getOrCreateCookieId();
-                        document.getElementById('cookie_id').value = cookieId;
+                    const form = event.target;
+                    const formData = new FormData(form);
+                    const data = {
+                        email: formData.get('email'),
+                        cookie_id: cookieId,
+                        'g-recaptcha-response': document.getElementById('g-recaptcha-response').value
+                    };
 
-                        // Prepare form data
-                        const form = event.target;
-                        const formData = new FormData(form);
-                        const data = {
-                            email: formData.get('email'),
-                            source_utm: formData.get('source_utm') || '',
-                            cookie_id: cookieId,
-                            'g-recaptcha-response': document.getElementById('g-recaptcha-response').value
-                        };
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA', {action: 'submit'}).then(function(token) {
+                            document.getElementById('g-recaptcha-response').value = token;
+                            data['g-recaptcha-response'] = token;
 
-                        // Execute reCAPTCHA and send data
-                        grecaptcha.ready(function() {
-                            grecaptcha.execute('6Le0zE0tAAAAAFS2r8ccElNqsbrkeVNRX0A3tuOA', {action: 'submit'}).then(function(token) {
-                                document.getElementById('g-recaptcha-response').value = token;
-                                data['g-recaptcha-response'] = token;
-
-                                // Send data to Activepieces
-                                fetch('https://activepieces-finance.yashparkar.com/api/v1/webhooks/ctjk18auY0lQUH4fyHrA3', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(data)
-                                })
-                                .then(response => {
-                                    if (response.ok) {
-                                        // Show success message, hide form
-                                        document.getElementById('lead-capture-success').style.display = 'block';
-                                        document.getElementById('hero-lead-capture').style.display = 'none';
-                                    } else {
-                                        alert('Something went wrong. Please try again.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Error:', error);
-                                    alert('Network error. Please try again.');
-                                });
+                            fetch('https://activepieces-finance.yashparkar.com/api/v1/webhooks/ctjk18auY0lQUH4fyHrA3', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(data)
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    document.getElementById('lead-capture-success').style.display = 'block';
+                                    document.getElementById('hero-lead-capture').style.display = 'none';
+                                } else {
+                                    alert('Something went wrong. Please try again.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('Network error. Please try again.');
                             });
                         });
                     });
-                </script>
+                });
+            </script>
+        </div>
+    </section>
+
+    <section id="pricing" class="widescreen-wrapper" style="margin-bottom: 80px;">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
+            <h2>Secure Your Access Pass</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Equip yourself with the Safety Net infrastructure before your next evaluation trial.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; max-width: 800px; margin: 0 auto;">
+            <div class="terminal-panel" style="text-align: center;">
+                <h3 style="justify-content: center;">Strategy Blueprint</h3>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 800; margin: 20px 0; color: var(--neon-green);">$1.00 <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">One-Time</span></div>
+                <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px;">
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Full Risk-Guard Workflow Export</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Automation Configuration Guide</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Instant Access</li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;">Get Blueprint</button>
             </div>
 
-            <!-- Simulation Subtitle -->
-            <p class="section-subtitle" style="margin-bottom: 24px;">Two challenge accounts, identical market data. One with DRG Bridge, one without.</p>
-
-            <!-- Simulation Card -->
-            <div class="sim-card">
-                <div class="sim-header">
-                    <div class="badge">🛡️ Live Simulation</div>
-                    <div class="data-status" id="dataStatus">✅ Market data flowing</div>
-                </div>
-
-                <div class="chart-grid">
-                    <!-- LEFT: Without DRG -->
-                    <div class="chart-panel">
-                        <div class="panel-label">
-                            <span>❌ Without DRG</span>
-                            <span class="status-tag fail" id="statusWithout">ACTIVE</span>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="chartWithout"></canvas>
-                        </div>
-                        <div class="chart-metrics">
-                            <div class="metric-item">
-                                <span class="metric-label">Drawdown</span>
-                                <span class="metric-value red" id="mw-drawdown">0.0%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Balance</span>
-                                <span class="metric-value" id="mw-balance">$10,000</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Status</span>
-                                <span class="metric-value red" id="mw-status">ACTIVE</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- RIGHT: With DRG -->
-                    <div class="chart-panel">
-                        <div class="panel-label">
-                            <span>✅ With DRG Bridge</span>
-                            <span class="status-tag pass" id="statusWith">PROTECTED</span>
-                        </div>
-                        <div class="chart-container">
-                            <canvas id="chartWith"></canvas>
-                            <div class="shield-overlay on" id="shieldOverlay">
-                                <span class="shield-icon">🛡️</span>
-                                <span class="shield-status" id="shieldStatus">DRG ON</span>
-                            </div>
-                        </div>
-                        <div class="chart-metrics">
-                            <div class="metric-item">
-                                <span class="metric-label">Drawdown</span>
-                                <span class="metric-value green" id="mw2-drawdown">0.0%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Balance</span>
-                                <span class="metric-value" id="mw2-balance">$10,000</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Status</span>
-                                <span class="metric-value green" id="mw2-status">PROTECTED</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Results Banner -->
-                <div class="result-banner" id="resultBanner">
-                    <div class="big">
-                        <span class="highlight" id="resultSaved">+$0</span> protected ·
-                        <span class="highlight" id="resultBlown">0</span> blown accounts ·
-                        $<span class="highlight" id="resultFees">0</span> re‑entry fees
-                    </div>
-                    <div class="sub">The DRG Bridge automatically prevents the drawdown trap.</div>
-                </div>
-
-                <!-- Controls -->
-                <div class="controls">
-                    <div class="control-group">
-                        <label>Drawdown Trigger</label>
-                        <input type="range" id="ddTriggerSlider" min="1.0" max="5.0" step="0.1" value="2.5" />
-                        <span class="value" id="ddTriggerValue">2.5%</span>
-                    </div>
-                    <div class="control-group">
-                        <label>DRG Strength</label>
-                        <input type="range" id="drgStrengthSlider" min="0.2" max="0.8" step="0.05" value="0.6" />
-                        <span class="value" id="drgStrengthValue">60%</span>
-                    </div>
-                    <button class="btn-reset" id="resetBtn">↺ Reset</button>
-                </div>
-            </div>
-
-            <!-- Hero CTA & Description (below simulation) -->
-            <p class="hero-desc" style="max-width: 640px; margin: 24px auto 0; text-align: center;">
-                Deploy a Drawdown-Risk-Guard (DRG) Bridge that prevents challenge account blowouts automatically to secure your capital and keep you in the game.
-            </p>
-            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px;">
-                <a href="#simulation" class="btn-primary" style="display:inline-block; padding:12px 28px;">Watch It Work →</a>
-                <a href="#pricing" class="btn-secondary" style="display:inline-block; padding:12px 28px; border:1px solid var(--border-muted); border-radius:var(--radius-sm); color:var(--text-secondary); text-decoration:none; font-size:0.8rem;">Get Access</a>
+            <div class="terminal-panel" style="text-align: center; border-color: var(--neon-green);">
+                <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--neon-green); color: #000; font-size: 0.65rem; font-weight: 800; padding: 3px 12px; border-radius: 50px; text-transform: uppercase;">Recommended</div>
+                <h3 style="justify-content: center;">Partner Access Pass</h3>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 800; margin: 20px 0; color: var(--neon-green);">FREE <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Via Partner Link</span></div>
+                <ul style="list-style: none; padding: 0; margin-bottom: 30px; text-align: left; color: var(--text-muted); font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px;">
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Complete Automated Safety Net Access</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Free Beta Seat for Chart Indicator</li>
+                    <li><i class="fa-solid fa-check" style="color: var(--neon-green); margin-right: 8px;"></i> Priority Community Support</li>
+                </ul>
+                <button class="btn-primary" style="width: 100%;">Claim Free Access</button>
             </div>
         </div>
     </section>
 
-    <!-- === HOW IT WORKS === -->
-    <section id="how-it-works" class="mechanics">
-        <div class="container">
-            <h2 class="section-title">How the DRG Bridge Works</h2>
-            <p class="section-subtitle">Four layers of protection that keep your prop account safe.</p>
-
-            <div class="mechanics-grid">
-                <div class="mech-card">
-                    <div class="mech-icon">📊</div>
-                    <h3>Real-Time Monitoring</h3>
-                    <p>Continuously tracks drawdown, volatility, and exposure across all open positions.</p>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-icon">🔍</div>
-                    <h3>Risk Detection</h3>
-                    <p>Identifies danger when drawdown exceeds 2.5%, volatility spikes, or exposure breaches 70%.</p>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-icon">🛡️</div>
-                    <h3>Automatic Protection</h3>
-                    <p>Reduces position size, tightens stops, and closes correlated positions — all in milliseconds.</p>
-                </div>
-                <div class="mech-card">
-                    <div class="mech-icon">🏆</div>
-                    <h3>Challenge Passing</h3>
-                    <p>Keeps your account above the 5% drawdown limit, ensuring you pass consistently.</p>
-                </div>
-            </div>
-
-            <div class="mechanism-explainer">
-                <h4>The DRG Bridge Mechanism</h4>
-                <div class="mechanism-flow">
-                    <span>📊 Trade Signal</span>
-                    <span class="arrow">→</span>
-                    <span>🔍 Risk Check</span>
-                    <span class="arrow">→</span>
-                    <span>🛡️ DRG Protection</span>
-                    <span class="arrow">→</span>
-                    <span>🏆 Pass Challenge</span>
-                </div>
-                <p class="mechanism-desc">
-                    When drawdown exceeds the trigger threshold, the DRG Bridge instantly activates — reducing position size by up to 60%, tightening stop-losses, and locking out correlated trades. The shield stays active until conditions normalize, protecting your account from the 5% drawdown trap.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    
-
-    <!-- === PRICING === -->
-    <section id="pricing" class="pricing">
-        <div class="container">
-            <h2 class="section-title">Choose Your Path</h2>
-            <p class="section-subtitle">Get the DRG Bridge and start passing challenges.</p>
-
-            <div class="pricing-grid">
-                <div class="plan-card">
-                    <h3>The Blueprint</h3>
-                    <div class="plan-price">$1.00 <span>One-Time</span></div>
-                    <ul class="plan-features">
-                        <li><span class="plan-icon">[+]</span> Full DRG Bridge workflow export</li>
-                        <li><span class="plan-icon">[+]</span> Import instructions for n8n</li>
-                        <li><span class="plan-icon">[+]</span> DIY configuration</li>
-                    </ul>
-                    <button class="btn-plan">Buy Now</button>
-                </div>
-
-                <div class="plan-card featured">
-                    <div class="plan-badge">🚀 RECOMMENDED</div>
-                    <h3>Full Alpha Access</h3>
-                    <div class="plan-price featured-price">FREE <span>Via Partner</span></div>
-                    <ul class="plan-features">
-                        <li><span class="plan-icon featured-icon">[+]</span> Automated DRG Bridge deployment</li>
-                        <li><span class="plan-icon featured-icon">[+]</span> Premium community leaderboard</li>
-                        <li><span class="plan-icon featured-icon">[+]</span> Instant verification</li>
-                        <li><span class="plan-icon featured-icon">[+]</span> Priority support</li>
-                    </ul>
-                    <button class="btn-featured">Get Elite Access</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- === FOOTER === -->
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2026 DRG Bridge. All rights reserved.</p>
+    <footer style="border-top: 1px solid var(--border-color); padding: 30px 0; text-align: center; font-size: 0.75rem; color: var(--text-muted);">
+        <div class="widescreen-wrapper">
+            <p>&copy; 2026 Safety Net Prop Protection. All rights reserved. Educational risk simulation only.</p>
         </div>
     </footer>
 
