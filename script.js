@@ -26,6 +26,7 @@ function getMasterState() {
 }
 
 function saveMasterStateLocally() {
+    syncTableEditsToMemory(); // Pull any inline edits from the table before saving
     const masterState = getMasterState();
     
     // Save to localStorage
@@ -66,6 +67,30 @@ function loadMasterState() {
 
 // --- LEDGER JOURNAL LOGIC ---
 
+function syncTableEditsToMemory() {
+    const tbody = document.getElementById('accountTableBody');
+    if (!tbody) return;
+    const rows = tbody.querySelectorAll('tr');
+    
+    rows.forEach(row => {
+        const id = parseInt(row.getAttribute('data-id'));
+        const nameInput = row.querySelector('.edit-name');
+        const startInput = row.querySelector('.edit-start');
+        const currentInput = row.querySelector('.edit-current');
+        const statusSelect = row.querySelector('.edit-status');
+
+        if (id && nameInput && startInput && currentInput && statusSelect) {
+            const acc = accounts.find(a => a.id === id);
+            if (acc) {
+                acc.name = nameInput.value;
+                acc.start = parseFloat(startInput.value) || 0;
+                acc.current = parseFloat(currentInput.value) || 0;
+                acc.status = statusSelect.value;
+            }
+        }
+    });
+}
+
 function saveAndRenderAccounts() {
     saveMasterStateLocally();
     renderAccountsTable();
@@ -78,7 +103,7 @@ function renderAccountsTable() {
     tbody.innerHTML = '';
     
     if (accounts.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">No accounts tracked yet. Add your evaluation accounts above.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 24px;">No accounts tracked yet. Add your evaluation accounts above or click "Update & Save Data".</td></tr>`;
         return;
     }
 
@@ -86,20 +111,23 @@ function renderAccountsTable() {
         const pnl = acc.current - acc.start;
         const pnlFormatted = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toLocaleString();
         const pnlColor = pnl >= 0 ? 'var(--neon-green)' : 'var(--danger-red)';
-        
-        let statusClass = 'active';
-        if (acc.status === 'Warning') statusClass = 'warning';
-        if (acc.status === 'Breached') statusClass = 'breached';
 
         const tr = document.createElement('tr');
+        tr.setAttribute('data-id', acc.id);
         tr.innerHTML = `
-            <td style="color: var(--text-main); font-weight: 600;">${escapeHtml(acc.name)}</td>
-            <td>$${Number(acc.start).toLocaleString()}</td>
-            <td>$${Number(acc.current).toLocaleString()}</td>
+            <td><input type="text" class="edit-name" value="${escapeHtml(acc.name)}" style="background:var(--bg-deep); border:1px solid var(--border-color); color:var(--text-main); padding:6px 8px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:0.8rem; width:100%;" /></td>
+            <td><input type="number" class="edit-start" value="${acc.start}" step="1000" style="background:var(--bg-deep); border:1px solid var(--border-color); color:var(--text-main); padding:6px 8px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:0.8rem; width:100%;" /></td>
+            <td><input type="number" class="edit-current" value="${acc.current}" step="100" style="background:var(--bg-deep); border:1px solid var(--border-color); color:var(--text-main); padding:6px 8px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:0.8rem; width:100%;" /></td>
             <td style="color: ${pnlColor}; font-weight: 700;">${pnlFormatted}</td>
-            <td><span class="badge-status ${statusClass}">${acc.status}</span></td>
+            <td>
+                <select class="edit-status" style="background:var(--bg-deep); border:1px solid var(--border-color); color:var(--text-main); padding:6px; border-radius:4px; font-size:0.75rem;">
+                    <option value="Active" ${acc.status === 'Active' ? 'selected' : ''}>Active</option>
+                    <option value="Warning" ${acc.status === 'Warning' ? 'selected' : ''}>High Risk</option>
+                    <option value="Breached" ${acc.status === 'Breached' ? 'selected' : ''}>Breached</option>
+                </select>
+            </td>
             <td style="text-align: right;">
-                <button onclick="deleteAccount(${acc.id})" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px;" title="Delete Account"><i class="fa-solid fa-trash"></i></button>
+                <button onclick="deleteAccount(${acc.id})" style="background: none; border: none; color: var(--danger-red); cursor: pointer; padding: 4px 8px;" title="Delete Account"><i class="fa-solid fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(tr);
@@ -112,13 +140,15 @@ function deleteAccount(id) {
 }
 
 function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 }
 
 const accountForm = document.getElementById('accountForm');
 if (accountForm) {
     accountForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        syncTableEditsToMemory(); // Capture any un-saved inline edits before adding new account
+        
         const name = document.getElementById('accName').value;
         const start = parseFloat(document.getElementById('accStart').value) || 50000;
         const current = parseFloat(document.getElementById('accCurrent').value) || start;
@@ -158,11 +188,30 @@ document.getElementById('currentDollar').addEventListener('input', () => { handl
 document.getElementById('simPnlPercent').addEventListener('input', () => { handleSimPnlPercentChange(); saveMasterStateLocally(); });
 document.getElementById('simPnlDollar').addEventListener('input', () => { handleSimPnlDollarChange(); saveMasterStateLocally(); });
 
-// Top Update & Save Data Button Handler
+// Top Update & Save Data Button Handler (Pushes calculator state as a sequential "Calculator Entry" into ledger)
 const bookmarkBtn = document.getElementById('bookmarkBtn');
 if (bookmarkBtn) {
     bookmarkBtn.addEventListener('click', function() {
+        // Automatically push current calculator state into the ledger as a new entry
+        syncTableEditsToMemory();
+        const startBal = parseFloat(document.getElementById('startingBalance').value) || 50000;
+        const currentEq = parseFloat(document.getElementById('currentDollar').value) || startBal;
+        
+        // Count how many calculator entries exist to assign sequential naming
+        const calcEntriesCount = accounts.filter(a => a.name.startsWith('Calculator Entry')).length + 1;
+        
+        const newCalcEntry = {
+            id: Date.now(),
+            name: `Calculator Entry ${calcEntriesCount}`,
+            start: startBal,
+            current: currentEq,
+            status: 'Active'
+        };
+        
+        accounts.push(newCalcEntry);
         saveMasterStateLocally();
+        renderAccountsTable();
+
         const toast = document.getElementById('saveToast');
         if (toast) {
             toast.style.display = 'block';
@@ -176,6 +225,7 @@ const updateLedgerBtn = document.getElementById('updateLedgerBtn');
 if (updateLedgerBtn) {
     updateLedgerBtn.addEventListener('click', function() {
         saveMasterStateLocally();
+        renderAccountsTable(); // Refresh table to update computed PnL numbers
         const ledgerToast = document.getElementById('ledgerSaveToast');
         if (ledgerToast) {
             ledgerToast.style.display = 'block';
