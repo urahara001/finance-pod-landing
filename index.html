@@ -20,6 +20,7 @@
                 </a>
                 <div class="nav-links">
                     <a href="#calculator">Live Stress Test</a>
+                    <a href="#journal">Account Ledger</a>
                     <a href="#coming-soon">Chart Indicator (Coming Soon)</a>
                     <a href="#pricing">Access Pass</a>
                 </div>
@@ -48,6 +49,8 @@
             <div class="terminal-panel">
                 <h3><i class="fa-solid fa-sliders"></i> Live Terminal Parameters</h3>
                 
+                
+
                 <div class="form-group">
                     <label for="propFirm">Firm Rule Structure 
                         <span class="info-tooltip"><i class="fa-solid fa-circle-info"></i><span class="tooltip-text">Intraday trailing models lock your liquidation floor to your highest floating peak. Static models anchor to your starting balance.</span></span>
@@ -147,7 +150,21 @@
 
                 <div class="analysis-box" id="explanationText">
                     </div>
+
+                 <div style="margin-bottom: var(--fib-3); padding-bottom: var(--fib-3); border-bottom: 1px solid var(--border-color);">
+                    <button type="button" id="bookmarkBtn" class="btn-primary" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <i class="fa-solid fa-floppy-disk"></i> Update & Save Data
+                    </button>
+                    <div id="saveToast" style="display: none; font-size: 0.75rem; color: var(--neon-green); text-align: center; margin-top: 8px; font-family: 'JetBrains Mono', monospace;">
+                        ✅ Data updated & saved locally to browser cookie!
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-muted); text-align: center; margin-top: 8px; line-height: 1.4;">
+                        💡 Your inputs are securely saved right in your browser. Just keep in mind that clearing your browser cache or cookies will reset this saved data.
+                    </div>
+                </div>   
             </div>
+
+            
 
         </div>
     </section>
@@ -181,7 +198,7 @@
                 <button type="submit" class="btn-primary" style="height: 45px;">+ Add Account</button>
             </form>
 
-            <div style="overflow-x: auto;">
+            <div style="overflow-x: auto; margin-bottom: var(--fib-3);">
                 <table style="width: 100%; border-collapse: collapse; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; text-align: left;">
                     <thead>
                         <tr style="border-bottom: 1px solid var(--border-color); color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase;">
@@ -196,6 +213,18 @@
                     <tbody id="accountTableBody">
                         </tbody>
                 </table>
+            </div>
+
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: var(--fib-2); border-top: 1px solid var(--border-color);">
+                <span style="font-size: 0.75rem; color: var(--text-muted);">
+                    <i class="fa-solid fa-shield-halved" style="color: var(--neon-green);"></i> All calculator parameters and account ledger rows are synchronized to browser storage.
+                </span>
+                <button type="button" id="updateLedgerBtn" class="btn-primary" style="padding: 8px 16px; font-size: 0.75rem;">
+                    <i class="fa-solid fa-floppy-disk" style="margin-right: 6px;"></i> Update & Save Data
+                </button>
+            </div>
+            <div id="ledgerSaveToast" style="display: none; font-size: 0.75rem; color: var(--neon-green); text-align: right; margin-top: 6px; font-family: 'JetBrains Mono', monospace;">
+                ✅ Full ledger & calculator state successfully synchronized!
             </div>
         </div>
     </section>
